@@ -114,7 +114,7 @@ def causal_masking(x, mask_ratio, T, mask_strategy):
 
     len_keep = int(T * (1 - mask_ratio))
 
-    if mask_strategy == 'causal':
+    if mask_strategy == 'temporal':
         # noise = torch.ones(N, T, device=x.device)  # noise in [0, 1]
         # noise[:,:len_keep] = 0
         noise = torch.arange(T).unsqueeze(dim=0).repeat(N,1)

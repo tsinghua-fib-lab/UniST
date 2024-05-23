@@ -8,33 +8,16 @@ from timm.models.layers import to_2tuple
 from timm.models.vision_transformer import DropPath, Mlp
 from ConvLSTM import ConvLSTM
 
-from Embed import DataEmbedding, TokenEmbedding, get_2d_sincos_pos_embed, get_2d_sincos_pos_embed_with_resolution, get_1d_sincos_pos_embed_from_grid, get_1d_sincos_pos_embed_from_grid_with_resolution
+from Embed import DataEmbedding, TokenEmbedding, SpatialPatchEmb,  get_2d_sincos_pos_embed, get_1d_sincos_pos_embed_from_grid
+
 from mask_strategy import *
 import copy
 
-def mae_vit_ST(args, **kwargs):
-    if args.size == 'small':
-        model = MaskedAutoencoderViT(
-            embed_dim=128,
-            depth=3,
-            decoder_embed_dim = 128,
-            decoder_depth=3,
-            num_heads=4,
-            decoder_num_heads=2,
-            mlp_ratio=2,
-            t_patch_size = args.t_patch_size,
-            patch_size = args.patch_size,
-            norm_layer=partial(nn.LayerNorm, eps=1e-6),
-            pos_emb = args.pos_emb,
-            no_qkv_bias = args.no_qkv_bias,
-            args = args,
-            **kwargs,
-        )
-        return model
+from Prompt_network import  Prompt_ST
 
-
-    elif args.size == '1':
-        model = MaskedAutoencoderViT(
+def UniST_model(args, **kwargs):
+    if args.size == '1':
+        model = UniST(
             embed_dim=64,
             depth=2,
             decoder_embed_dim = 64,
@@ -53,7 +36,7 @@ def mae_vit_ST(args, **kwargs):
         return model
 
     elif args.size == '2':
-        model = MaskedAutoencoderViT(
+        model = UniST(
             embed_dim=64,
             depth=6,
             decoder_embed_dim = 64,
@@ -72,7 +55,7 @@ def mae_vit_ST(args, **kwargs):
         return model
 
     elif args.size == '3':
-        model = MaskedAutoencoderViT(
+        model = UniST(
             embed_dim=128,
             depth=4,
             decoder_embed_dim = 128,
@@ -91,7 +74,7 @@ def mae_vit_ST(args, **kwargs):
         return model
 
     elif args.size == '4':
-        model = MaskedAutoencoderViT(
+        model = UniST(
             embed_dim=128,
             depth=8,
             decoder_embed_dim = 128,
@@ -110,7 +93,7 @@ def mae_vit_ST(args, **kwargs):
         return model
 
     elif args.size == '5':
-        model = MaskedAutoencoderViT(
+        model = UniST(
             embed_dim=256,
             depth=4,
             decoder_embed_dim = 256,
@@ -129,7 +112,7 @@ def mae_vit_ST(args, **kwargs):
         return model
 
     elif args.size == '6':
-        model = MaskedAutoencoderViT(
+        model = UniST(
             embed_dim=256,
             depth=8,
             decoder_embed_dim = 256,
@@ -148,7 +131,7 @@ def mae_vit_ST(args, **kwargs):
         return model
 
     elif args.size == '7':
-        model = MaskedAutoencoderViT(
+        model = UniST(
             embed_dim=256,
             depth=12,
             decoder_embed_dim = 256,
@@ -166,8 +149,8 @@ def mae_vit_ST(args, **kwargs):
         )
         return model
 
-    elif args.size == 'middle': # 6.7M
-        model = MaskedAutoencoderViT(
+    elif args.size == 'middle':
+        model = UniST(
             embed_dim=128,
             depth=6,
             decoder_embed_dim = 128,
@@ -185,8 +168,8 @@ def mae_vit_ST(args, **kwargs):
         )
         return model
 
-    elif args.size == 'large': # 28.9M
-        model = MaskedAutoencoderViT(
+    elif args.size == 'large':
+        model = UniST(
             embed_dim=384,
             depth=6,
             decoder_embed_dim = 384,
@@ -308,12 +291,12 @@ class Block(nn.Module):
 
 
 
-class MaskedAutoencoderViT(nn.Module):
+class UniST(nn.Module):
     """ Masked Autoencoder with VisionTransformer backbone
     """
     def __init__(self, patch_size=1, in_chans=1,
-                 embed_dim=1024, decoder_embed_dim=512, depth=24, decoder_depth=4, num_heads=16,  decoder_num_heads=4,
-                 mlp_ratio=4., norm_layer=nn.LayerNorm, t_patch_size=1,
+                 embed_dim=512, decoder_embed_dim=512, depth=12, decoder_depth=8, num_heads=8,  decoder_num_heads=4,
+                 mlp_ratio=2, norm_layer=nn.LayerNorm, t_patch_size=1,
                  no_qkv_bias=False, pos_emb = 'trivial', args=None, ):
         super().__init__()
 
@@ -326,16 +309,19 @@ class MaskedAutoencoderViT(nn.Module):
         #if 'TDrive' in args.dataset or 'BikeNYC2' in args.dataset:
         self.Embedding_24 = DataEmbedding(1, embed_dim, args=args, size1=24, size2 = 7)
 
+        if args.prompt_ST != 0:
+            self.st_prompt = Prompt_ST(args.num_memory_spatial, args.num_memory_temporal, embed_dim, self.args.his_len, args.conv_num, args=args)
+            self.spatial_patch = SpatialPatchEmb(embed_dim, embed_dim, self.args.patch_size)
+
+
         # mask
         self.t_patch_size = t_patch_size
         self.decoder_embed_dim = decoder_embed_dim
         self.patch_size = patch_size
         self.in_chans = in_chans
         
-
         self.embed_dim = embed_dim
         self.decoder_embed_dim = decoder_embed_dim
-        self.patch_size = patch_size
 
         self.pos_embed_spatial = nn.Parameter(
             torch.zeros(1, 1024, embed_dim)
@@ -404,7 +390,7 @@ class MaskedAutoencoderViT(nn.Module):
 
         self.initialize_weights_trivial()
 
-        print("model initialized MAE")
+        print("model initialized!")
 
     def init_emb(self):
         torch.nn.init.trunc_normal_(self.Embedding.temporal_embedding.hour_embed.weight.data, std=0.02)
@@ -412,24 +398,6 @@ class MaskedAutoencoderViT(nn.Module):
         w = self.Embedding.value_embedding.tokenConv.weight.data
         torch.nn.init.xavier_uniform_(w.view([w.shape[0], -1]))
         torch.nn.init.normal_(self.mask_token, std=0.02)
-        #torch.nn.init.normal_(self.mask_token2, std=0.02)
-
-    def init_pos_emb(self):
-        torch.nn.init.trunc_normal_(self.pos_embed_spatial, std=0.02)
-        torch.nn.init.trunc_normal_(self.pos_embed_temporal, std=0.02)
-        torch.nn.init.trunc_normal_(self.decoder_pos_embed_spatial, std=0.02)
-        torch.nn.init.trunc_normal_(self.decoder_pos_embed_temporal, std=0.02)
-        torch.nn.init.trunc_normal_(self.Embedding.temporal_embedding.hour_embed.weight.data, std=0.02)
-        torch.nn.init.trunc_normal_(self.Embedding.temporal_embedding.weekday_embed.weight.data, std=0.02)
-        w = self.Embedding.value_embedding.tokenConv.weight.data
-        torch.nn.init.xavier_uniform_(w.view([w.shape[0], -1]))
-        torch.nn.init.normal_(self.mask_token, std=0.02)
-        #torch.nn.init.normal_(self.mask_token2, std=0.02)
-        
-
-    def init_head(self):
-        self.decoder_norm.apply(self._init_weights)
-        self.decoder_pred.apply(self._init_weights)
 
 
     def get_weights_sincos(self, num_t_patch, num_patch_1, num_patch_2):
@@ -458,8 +426,6 @@ class MaskedAutoencoderViT(nn.Module):
         pos_embed_temporal.requires_grad = False
 
         return pos_embed_spatial, pos_embed_temporal, copy.deepcopy(pos_embed_spatial), copy.deepcopy(pos_embed_temporal)
-
-    
 
     def initialize_weights_trivial(self):
         torch.nn.init.trunc_normal_(self.pos_embed_spatial, std=0.02)
@@ -490,10 +456,14 @@ class MaskedAutoencoderViT(nn.Module):
             nn.init.constant_(m.bias, 0)
             nn.init.constant_(m.weight, 1.0)
 
+    
+
+
+
     def patchify(self, imgs):
         """
-        imgs: (N, 3, H, W)
-        x: (N, L, patch_size**2 *3)
+        imgs: (N, 1, T, H, W)
+        x: (N, L, patch_size**2 *1)
         """
         N, _, T, H, W = imgs.shape
         p = self.args.patch_size
@@ -521,7 +491,7 @@ class MaskedAutoencoderViT(nn.Module):
         return imgs
 
 
-    def pos_embed_enc(self, ids_keep, batch, input_size, res1, res2):
+    def pos_embed_enc(self, ids_keep, batch, input_size):
 
         if self.pos_emb == 'trivial':
             pos_embed = self.pos_embed_spatial[:,:input_size[1]*input_size[2]].repeat(
@@ -551,12 +521,9 @@ class MaskedAutoencoderViT(nn.Module):
             dim=1,
             index=ids_keep.unsqueeze(-1).repeat(1, 1, pos_embed.shape[2]),
         )
-
-        #pos_embed_sort = pos_embed
-
         return pos_embed_sort
 
-    def pos_embed_dec(self, ids_keep, batch, input_size, res1, res2):
+    def pos_embed_dec(self, ids_keep, batch, input_size):
 
         if self.pos_emb == 'trivial':
             decoder_pos_embed = self.decoder_pos_embed_spatial[:,:input_size[1]*input_size[2]].repeat(
@@ -584,9 +551,48 @@ class MaskedAutoencoderViT(nn.Module):
 
         return decoder_pos_embed
 
+    def prompt_generate(self, shape, x_period, x_closeness, x, data, pos):
+        P = x_period.shape[1]
+
+        HW = x_closeness.shape[2]
+
+        x_period = x_period.unsqueeze(2).reshape(-1,1,x_period.shape[-3],x_period.shape[-2],x_period.shape[-1]) 
+
+        x_closeness = x_closeness.permute(0,2,1,3).reshape(-1, x_closeness.shape[1], x_closeness.shape[-1]) 
+
+        if 'TDrive' in data or 'BikeNYC2' in data:
+            x_period = self.Embedding_24.value_embedding(x_period).reshape(shape[0], P, -1, self.embed_dim)
+           
+        else:
+            x_period = self.Embedding.value_embedding(x_period).reshape(shape[0], P, -1, self.embed_dim)
+
+        x_period = x_period.permute(0,2,1,3).reshape(-1,x_period.shape[1],x_period.shape[-1])
+
+        prompt_t = self.st_prompt.temporal_prompt(x_closeness, x_period)
+
+        prompt_c = prompt_t['hc'].reshape(shape[0], -1, prompt_t['hc'].shape[-1])
+        prompt_p = prompt_t['hp'].reshape(shape[0], -1, prompt_t['hp'].shape[-1]) 
+
+        prompt_c = prompt_c.unsqueeze(dim=1).repeat(1,self.args.pred_len//self.args.t_patch_size,1,1)
+        
+        pos_t = pos.reshape(shape[0],(self.args.his_len + self.args.pred_len) // self.t_patch_size, HW, self.embed_dim)[:,-self.args.pred_len // self.t_patch_size:]
+
+        assert prompt_c.shape == pos_t.shape
+        prompt_c = (prompt_c+pos_t).reshape(shape[0],-1,self.embed_dim)
+
+        t_loss = prompt_t['loss']
+
+        out_s = self.st_prompt.spatial_prompt(x)
+
+        out_s, s_loss = out_s['out'], out_s['loss']
+        out_s = [self.spatial_patch(i).unsqueeze(dim=1).repeat(1,self.args.pred_len//self.args.t_patch_size,1,1).reshape(i.shape[0],-1,self.embed_dim).unsqueeze(dim=0) for i in out_s]
+
+        out_s = torch.mean(torch.cat(out_s,dim=0),dim=0)
+
+        return dict(tc = prompt_c, tp = prompt_p, s = out_s, loss = t_loss + s_loss)
 
 
-    def forward_encoder(self, x, x_mark, mask_ratio, mask_strategy, seed=None, data=None, res1 = 1, res2 = 1, mode='backward'):
+    def forward_encoder(self, x, x_mark, mask_ratio, mask_strategy, seed=None, data=None, mode='backward'):
         # embed patches
         N, _, T, H, W = x.shape
 
@@ -608,27 +614,27 @@ class MaskedAutoencoderViT(nn.Module):
             elif mask_strategy == 'tube':
                 x, mask, ids_restore, ids_keep = tube_masking(x, mask_ratio, T=T)
 
-            elif mask_strategy == 'tube_block':
+            elif mask_strategy == 'block':
                 x, mask, ids_restore, ids_keep = tube_block_masking(x, mask_ratio, T=T)
 
-            elif mask_strategy in ['frame','causal']:
+            elif mask_strategy in ['frame','temporal']:
                 x, mask, ids_restore, ids_keep = causal_masking(x, mask_ratio, T=T, mask_strategy=mask_strategy)
 
-        elif mode == 'forward': # just evaluate
+        elif mode == 'forward': # evaluation, fix random seed
             if mask_strategy == 'random':
                 x, mask, ids_restore, ids_keep = random_masking_evaluate(x, mask_ratio)
 
             elif mask_strategy == 'tube':
                 x, mask, ids_restore, ids_keep = tube_masking_evaluate(x, mask_ratio, T=T)
 
-            elif mask_strategy == 'tube_block':
+            elif mask_strategy == 'block':
                 x, mask, ids_restore, ids_keep = tube_block_masking_evaluate(x, mask_ratio, T=T)
 
-            elif mask_strategy in ['frame','causal']:
+            elif mask_strategy in ['frame','temporal']:
                 x, mask, ids_restore, ids_keep = causal_masking(x, mask_ratio, T=T, mask_strategy=mask_strategy)
 
         input_size = (T, H//self.patch_size, W//self.patch_size)
-        pos_embed_sort = self.pos_embed_enc(ids_keep, N, input_size, res1, res2)
+        pos_embed_sort = self.pos_embed_enc(ids_keep, N, input_size)
 
         assert x.shape == pos_embed_sort.shape
 
@@ -642,7 +648,7 @@ class MaskedAutoencoderViT(nn.Module):
 
         return x_attn, mask, ids_restore, input_size, TimeEmb
 
-    def forward_decoder(self, x, x_mark, mask, ids_restore, mask_strategy, TimeEmb, input_size=None, res1=1, res2 = 1):
+    def forward_decoder(self, x, x_period, x_origin, ids_restore, mask_strategy, TimeEmb, input_size=None, data=None):
         N = x.shape[0]
         T, H, W = input_size
 
@@ -653,18 +659,45 @@ class MaskedAutoencoderViT(nn.Module):
         if mask_strategy == 'random':
             x = random_restore(x, ids_restore, N, T,  H, W, C, self.mask_token)
 
-        elif mask_strategy in ['tube','tube_block']:
+        elif mask_strategy in ['tube','block']:
             x = tube_restore(x, ids_restore, N, T, H,  W,  C, self.mask_token)
 
-        elif mask_strategy in ['frame','causal']:
+        elif mask_strategy in ['frame','temporal']:
             x = causal_restore(x, ids_restore, N, T, H,  W, C, self.mask_token)
 
-        decoder_pos_embed = self.pos_embed_dec(ids_restore, N, input_size, res1, res2)
+        decoder_pos_embed = self.pos_embed_dec(ids_restore, N, input_size)
 
         # add pos embed
         assert x.shape == decoder_pos_embed.shape == TimeEmb.shape
 
         x_attn = x + decoder_pos_embed + TimeEmb
+
+        if self.args.prompt_ST == 1:
+
+            prompt = self.prompt_generate(x_attn.shape, x_period, x_attn.reshape(N, T, H*W, x_attn.shape[-1]), x_origin, data, pos = decoder_pos_embed + TimeEmb)
+
+            if self.args.prompt_content == 's_p':
+                token_prompt = prompt['tp'] + prompt['s']
+
+            elif self.args.prompt_content == 'p_c':
+                token_prompt = prompt['tp'] + prompt['tc']
+
+            elif self.args.prompt_content == 's_c':
+                token_prompt = prompt['s'] + prompt['tc']
+
+            elif self.args.prompt_content == 's':
+                token_prompt = prompt['s']
+
+            elif self.args.prompt_content == 'p':
+                token_prompt = prompt['tp']
+
+            elif self.args.prompt_content == 'c':
+                token_prompt = prompt['tc']
+
+            elif self.args.prompt_content == 's_p_c':
+                token_prompt = prompt['tc'] + prompt['s'] + prompt['tp']
+
+            x_attn[:,-self.args.pred_len // self.args.t_patch_size * H * W:] += token_prompt
 
         # apply Transformer blocks
         for index, blk in enumerate(self.decoder_blocks):
@@ -693,15 +726,21 @@ class MaskedAutoencoderViT(nn.Module):
         return loss1, loss2, target
 
 
-    def forward(self, imgs, mask_ratio=0.75, mask_strategy='random',seed=None, data='none', res=[1,1], mode='backward'):
+    def forward(self, imgs, mask_ratio=0.5, mask_strategy='random',seed=None, data='none', mode='backward'):
 
-        imgs, imgs_mark = imgs
+        imgs, imgs_mark, imgs_period = imgs
+
+        imgs_period = imgs_period[:,:,self.args.his_len:]
+
         T, H, W = imgs.shape[2:]
-        latent, mask, ids_restore, input_size, TimeEmb = self.forward_encoder(imgs, imgs_mark, mask_ratio, mask_strategy, seed=seed, data=data, res1 = res[0], res2 = res[1], mode=mode)
-        pred = self.forward_decoder(latent, imgs_mark, mask, ids_restore, mask_strategy, TimeEmb, input_size = input_size, res1 = res[0], res2 = res[1])  # [N, L, p*p*1]
+        latent, mask, ids_restore, input_size, TimeEmb = self.forward_encoder(imgs, imgs_mark, mask_ratio, mask_strategy, seed=seed, data=data, mode=mode)
+
+        pred = self.forward_decoder(latent,  imgs_period,  imgs[:,:,:self.args.his_len].squeeze(dim=1).clone(), ids_restore, mask_strategy, TimeEmb, input_size = input_size, data=data)  # [N, L, p*p*1]
         L = pred.shape[1]
+
         # predictor projection
         pred = self.decoder_pred(pred)
+
         loss1, loss2, target = self.forward_loss(imgs, pred, mask)
         
         return loss1, loss2, pred, target, mask

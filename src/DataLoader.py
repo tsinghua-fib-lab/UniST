@@ -47,6 +47,21 @@ def data_load_single(args, dataset):
     X_test = torch.tensor(data_all['X_test'][0]).unsqueeze(1)
     X_val = torch.tensor(data_all['X_val'][0]).unsqueeze(1)
 
+    X_train_period = torch.tensor(data_all['X_train'][1]).permute(0,2,1,3,4)
+    X_test_period = torch.tensor(data_all['X_test'][1]).permute(0,2,1,3,4)
+    X_val_period = torch.tensor(data_all['X_val'][1]).permute(0,2,1,3,4)
+
+    # X_train = torch.randn([1000, 1, 12, 16, 8])
+    # X_test = torch.randn([100, 1, 12, 16, 8])
+    # X_val = torch.randn([100, 1, 12, 16, 8])
+
+    # X_train_period = torch.randn([1000, 3, 12, 16, 8])
+    # X_test_period = torch.randn([100, 3, 12, 16, 8])
+    # # X_val_period = torch.randn([100, 3, 12, 16, 8])
+
+    # data_all = {}
+    # data_all['timestamps'] = {'train':torch.zeros([1000,12,2]).long(), 'test':torch.zeros([100,12,2]).long(), 'val':torch.zeros([100,12,2]).long()}
+
     args.seq_len = X_train.shape[2]
     H, W = X_train.shape[3], X_train.shape[4]  
 
@@ -81,48 +96,29 @@ def data_load_single(args, dataset):
     X_train = my_scaler.transform(X_train.reshape(-1,1)).reshape(X_train.shape)
     X_test = my_scaler.transform(X_test.reshape(-1,1)).reshape(X_test.shape)
     X_val = my_scaler.transform(X_val.reshape(-1,1)).reshape(X_val.shape)
+    X_train_period = my_scaler.transform(X_train_period.reshape(-1,1)).reshape(X_train_period.shape)
+    X_test_period = my_scaler.transform(X_test_period.reshape(-1,1)).reshape(X_test_period.shape)
+    X_val_period = my_scaler.transform(X_val_period.reshape(-1,1)).reshape(X_val_period.shape)
 
-    data = [[X_train[i], X_train_ts[i]] for i in range(X_train.shape[0])]
-    test_data = [[X_test[i], X_test_ts[i]] for i in range(X_test.shape[0])]
-    val_data = [[X_val[i], X_val_ts[i]] for i in range(X_val.shape[0])]
+    data = [[X_train[i], X_train_ts[i], X_train_period[i]] for i in range(X_train.shape[0])]
+    test_data = [[X_test[i], X_test_ts[i], X_test_period[i]] for i in range(X_test.shape[0])]
+    val_data = [[X_val[i], X_val_ts[i], X_val_period[i]] for i in range(X_val.shape[0])]
 
-    if 'long' not in args.task: #  reduce the data volume
-        if 'TaxiBJ' in dataset:
-            random.seed(555)
-            data = random.sample(data, 5000)
-            test_data = random.sample(test_data, 500)
-            val_data = random.sample(val_data, 500)
+    if args.mode == 'few-shot':
+        data = data[:int(len(data)*args.few_ratio)]
 
-        elif 'TDrive' in dataset:
-            random.seed(555)
-            test_data = random.sample(test_data, 500)
-            val_data = random.sample(val_data, 500)
+    if H + W < 32:
+        batch_size = args.batch_size_1
+    elif H + W < 48:
+        batch_size = args.batch_size_2
+    elif H + W < 64:
+        batch_size = args.batch_size_3
 
-    if 'BikeNYC' in dataset or 'TaxiNYC' in dataset or 'DC' in dataset or 'CHI' in dataset or 'Porto' in dataset or 'Austin' in dataset:
-        batch_size = args.batch_size_nyc
-    elif 'Crowd' in dataset or 'Cellular' in dataset:
-        batch_size = args.batch_size_nj
-    elif 'TaxiBJ' in dataset or 'TDrive' in dataset or 'Traffic' in dataset:
-        batch_size = args.batch_size_taxibj
-        if H + W < 48:
-            batch_size *= 2
     data = th.utils.data.DataLoader(data, num_workers=4, batch_size=batch_size, shuffle=True) 
-    
     test_data = th.utils.data.DataLoader(test_data, num_workers=4, batch_size = 4 * batch_size, shuffle=False)
     val_data = th.utils.data.DataLoader(val_data, num_workers=4, batch_size = 4 * batch_size, shuffle=False)
 
     return  data, test_data, val_data, my_scaler
-
-def data_load_mix(args, data_list):
-    data_all = []
-
-    for data in data_list:
-        data_all += data
-
-    data_all = th.utils.data.DataLoader(data_all, num_workers=4, batch_size=args.batch_size, shuffle=True)
-
-    return data_all
-
 
 def data_load(args):
 

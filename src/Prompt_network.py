@@ -67,43 +67,6 @@ class Memory(nn.Module):
 
         return dict(out=out, att_weight=att_weight, loss=loss_top)
 
-class Prompt(nn.Module):
-    """ Prompt network
-    """
-    def __init__(self, num_memory1, num_memory2,  memory_dim, args=None):
-        super().__init__()
-
-        self.encode_memory = Memory(num_memory1, memory_dim, args=args)
-
-        self.decode_memory = Memory(num_memory2, memory_dim, args=args)
-
-        print("model initialized")
-
-
-    def forward_encoder(self,x):
-        """
-        :param x: query features with size [N,C], where N is the number of query items,
-                  C is same as dimension of memory slot
-
-        :return: query output retrieved from memory, with the same size as x.
-        """
-
-        out = self.encode_memory(x)
-
-        return out
-    
-    def forward_decoder(self,x):
-        """
-        :param x: query features with size [N,C], where N is the number of query items,
-                  C is same as dimension of memory slot
-
-        :return: query output retrieved from memory, with the same size as x.
-        """
-
-        out = self.decode_memory(x)
-
-        return out
-
 
 class Sptial_prompt(nn.Module):
     """ miltiscale convolutional kernels

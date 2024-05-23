@@ -8,7 +8,7 @@ import time
 
 
 class TrainLoop:
-    def __init__(self, args, writer, model, data, test_data, val_data, device):
+    def __init__(self, args, writer, model, data, test_data, val_data, device, early_stop = 5):
         self.args = args
         self.writer = writer
         self.model = model
@@ -25,9 +25,9 @@ class TrainLoop:
         self.warmup_steps=5
         self.min_lr = args.min_lr
         self.best_rmse = 1e9
-        self.early_stop = 0
+        self.early_stop = early_stop
         
-        self.mask_list = {'random':[0.25,0.5,0.75],'causal':[0.33, 0.5, 0.66],'tube':[0.25,0.5,0.75],'tube_block':[0.25,0.5,0.75]}
+        self.mask_list = {'random':[0.5],'temporal':[0.5],'tube':[0.5],'block':[0.5]}
 
 
     def run_step(self, batch, step, mask_ratio, mask_strategy,index, name):
@@ -54,13 +54,8 @@ class TrainLoop:
                 target_mask = target.squeeze(dim=2)
 
                 error += mean_squared_error(self.args.scaler[dataset].inverse_transform(pred_mask[mask==1].reshape(-1,1).detach().cpu().numpy()), self.args.scaler[dataset].inverse_transform(target_mask[mask==1].reshape(-1,1).detach().cpu().numpy()), squared=True) * mask.sum().item()
-                error2 +=  mean_squared_error(self.args.scaler[dataset].inverse_transform(pred_mask[mask==0].reshape(-1,1).detach().cpu().numpy()), self.args.scaler[dataset].inverse_transform(target_mask[mask==0].reshape(-1,1).detach().cpu().numpy()), squared=True) * (1-mask).sum().item()
-
                 error_mae += mean_absolute_error(self.args.scaler[dataset].inverse_transform(pred_mask[mask==1].reshape(-1,1).detach().cpu().numpy()), self.args.scaler[dataset].inverse_transform(target_mask[mask==1].reshape(-1,1).detach().cpu().numpy())) * mask.sum().item()
-
                 error_norm += loss.item() * mask.sum().item()
-
-
                 num += mask.sum().item()
                 num2 += (1-mask).sum().item()
 
@@ -141,7 +136,7 @@ class TrainLoop:
                 f.write(str(rmse_key_result)+'\n')
             return 'save'
 
-        elif self.args.stage in [0,1,2]:
+        else:
             self.early_stop += 1
             print('\nRMSE:{}, RMSE_best:{}, early_stop:{}\n'.format(rmse, self.best_rmse, self.early_stop))
             with open(self.args.model_path+'result_all.txt', 'a') as f:
@@ -152,27 +147,27 @@ class TrainLoop:
                     f.write('Early stop!\n')
                 with open(self.args.model_path+'result_all.txt', 'a') as f:
                     f.write('Early stop!\n')
-                if self.args.stage in [0,2]:
                     exit()
-                elif self.args.stage == 1:
-                    return 'break_1_stage'
 
-            return 'none'
-        
     def mask_select(self):
-        if self.args.mask_strategy_random == 'none': # 'none' or 'batch'
+        if self.args.mask_strategy_random == 'none': #'none' or 'batch'
             mask_strategy = self.args.mask_strategy
             mask_ratio = self.args.mask_ratio
         else:
-            mask_strategy=random.choice(['random','causal','tube','tube_block'])
+            mask_strategy=random.choice(['random','temporal','tube','block'])
             mask_ratio=random.choice(self.mask_list[mask_strategy])
 
         return mask_strategy, mask_ratio
 
     def run_loop(self):
         step = 0
+
+        if self.args.mode == 'testing':
+            self.Evaluation(self.val_data, 0, best=True, Type='val')
+            exit()
         
         self.Evaluation(self.val_data, 0, best=True, Type='val')
+        
         for epoch in range(self.args.total_epoches):
             print('Training')
 
@@ -193,19 +188,11 @@ class TrainLoop:
             print('training time:{} min'.format(round((end-start)/60.0,2)))
             print('epoch:{}, training loss:{}, training rmse:{}'.format(epoch, loss_all / num_all,np.sqrt(loss_real_all / num_all)))
 
-            if epoch >= 10 or self.args.mode!='training':
-                self.writer.add_scalar('Training/Stage_{}_Loss_epoch'.format(self.args.stage), loss_all / num_all, epoch)
-                self.writer.add_scalar('Training/Stage_{}_Loss_real'.format(self.args.stage), np.sqrt(loss_real_all / num_all), epoch)
-                
-
             if epoch % self.log_interval == 0 and epoch > 0 or epoch == 10 or epoch == self.args.total_epoches-1:
                 print('Evaluation')
-                is_break = self.Evaluation(self.val_data, epoch, best=True, Type='val')
+                eval_result = self.Evaluation(self.val_data, epoch, best=True, Type='val')
 
-                if is_break == 'break_1_stage':
-                    break
-
-                if is_break == 'save':
+                if eval_result == 'save':
                     print('test evaluate!')
                     rmse_test, rmse_key_test = self.Evaluation(self.test_data, epoch, best=False, Type='test')
                     print('stage:{}, epoch:{}, test rmse: {}\n'.format(self.args.stage, epoch, rmse_test))
@@ -217,16 +204,6 @@ class TrainLoop:
                         f.write('stage:{}, epoch:{}, test rmse: {}\n'.format(self.args.stage, epoch, rmse_test))
                         f.write(str(rmse_key_test)+'\n')
 
-        if self.args.stage == 1 and epoch<self.args.total_epoches-1:
-            with open(self.args.model_path+'result_all.txt', 'a') as f:
-                f.write('\nnot enough epoch for stage 1!\n')
-        elif self.args.stage == 2 and epoch<self.args.total_epoches-1:
-            with open(self.args.model_path+'result_all.txt', 'a') as f:
-                f.write('\nnot enough epoch for stage 2!\n')
-        elif self.args.stage == 0 and epoch<self.args.total_epoches-1:
-            with open(self.args.model_path+'result_all.txt', 'a') as f:
-                f.write('\nnot enough epoch!\n')
-
     def model_forward(self, batch, model, mask_ratio, mask_strategy, seed=None, data=None, mode='backward'):
 
         batch = [i.to(self.device) for i in batch]
@@ -237,7 +214,6 @@ class TrainLoop:
                 mask_strategy = mask_strategy, 
                 seed = seed, 
                 data = data,
-                res = [1,1],
                 mode = mode, 
             )
         return loss, loss2, pred, target, mask 
