@@ -1,0 +1,2 @@
+
+python main.py --device_id 2 --machine machine --task short --size middle   --prompt_ST 1  --pred_len 6 --his_len 6  -num_memory_spatial 512 --num_memory_temporal 512  --prompt_content 's_p_c'  --dataset Crowd --used_data 'diverse' --file_load_path  pretrained_model_path  --few_ratio 0.0

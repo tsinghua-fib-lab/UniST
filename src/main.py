@@ -97,6 +97,12 @@ def main():
     data, test_data, val_data, args.scaler = data_load_main(args)
     assert args.his_len + args.pred_len == args.seq_len
 
+    if args.few_ratio < 1.0:
+        if args.few_ratio == 0.0:
+            args.mode = 'testing' # just evaluation on the test set
+        else:
+            args.mode = 'prompting' # with prompt-tuning
+
     args.folder = 'Dataset_{}_Task_{}_FewRatio_{}/'.format(args.dataset, args.task, args.few_ratio)
 
     if args.mode in ['training','prompting']:
