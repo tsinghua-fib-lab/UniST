@@ -1,6 +1,6 @@
 # UniST
 
-The repo is the official implementation for the paper: UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction. It currently includes code implementations for the following tasks:
+The repo is the official implementation for the paper: [**UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction**](https://arxiv.org/abs/2402.11838). It currently includes code implementations for the following tasks:
 
 > **Short-term Prediction**: We provide all scripts  for the reproduction of short-term prediction results in this repo.
 
