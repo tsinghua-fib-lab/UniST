@@ -51,10 +51,10 @@ Then please create a folder named ``experiments`` to record the training process
 We provide the scripts under the folder ``./scripts/pretrain.sh``. You can train UniST with the Cellular dataset as the following examples:
 
 ``
-python main.py --device_id 2 --machine your_machine_name --batch_size 256 --dataset Cellular --task short --lr_anneal_steps 500 --size middle  --lr 3e-4 --used_data 'all' 
+python main.py --device_id 3 --machine machine  --dataset Crowd --task short --size middle  --mask_strategy_random 'batch' --lr 3e-4 --used_data 'single'  --prompt_ST 0
 ``
 
-Once your model is trained, you will find the logs recording the training process in the  ``./logs/`` directory. The folder will be named as the ``Dataset_<dataset>_task_<task>``. In the ``./experiments/Dataset_<dataset>_task_<task>/model_save/``, you will find the trained model named ``model_best.pkl``.
+Once your model is trained, you will find the logs recording the training process in the  ``./logs/`` directory. The folder will be named as the ``Pretrain_Dataset_<dataset>_task_<task>``. In the ``./experiments/Pretrain_Dataset_<dataset>_task_<task>/model_save/``, you will find the trained model named ``model_best.pkl``.
 
 In our experiments, we leverage multiple datasets to enhance UniST. 
 If you need to use multiple datasets, please use an asterisk (*) to separate the datasets.
@@ -69,8 +69,7 @@ For example, ``multiple_datasets`` can be  ``Crowd*Cellular*TaxiNYC*TaxiBike*Tra
 We provide the scripts under the folder ``./scripts/prompt_tuning.sh``. You can fine-tune UniST with the Cellular dataset as the following examples:
 
 ``
-python main_prompt.py --device_id 2 --machine machine --task short   --his_len 6 --pred_len 6 --dataset Cellular --file_load_path  pretrained_model_path  --num_memory_spatial 512 --num_memory_temporal 512   --prompt_content 's_p_c'  --lr2 5e-5
-``
+python main.py --device_id 2 --machine machine --task short --size middle   --prompt_ST 1  --pred_len 6 --his_len 6  -num_memory_spatial 512 --num_memory_temporal 512  --prompt_content 's_p_c'  --dataset Crowd    --lr 3e-4 --used_data 'single' --file_load_path  pretrained_model_path  ``
 
 There are some new parameters to specify:
 
@@ -78,9 +77,10 @@ There are some new parameters to specify:
 - ``pred_len`` specifies the prediction horizon.
 - ``file_load_path`` specifies the save path of the pre-trained model, the default is ``./experiments/Dataset_<dataset>_task_<task>/model_save/model_best.pkl``
 - ``num_memory_spatial`` and ``num_memory_temporal`` specify the number of embeddings in the memory pools.
+- ``prompt_ST`` specifies whether perform prompt-tuning: 0 for no prompt and 1 for prompt-tuning.
 - ``prompt_content`` specifies the type of prompt, which can be selected from ['s_p_c','s','c','p','s_c','s_p','p_c'].
 
-Once your model is trained, you will find the logs recording the training process in the  ``./logs/`` directory. The folder will be named as the ``Prompt_Mode_finetuning_Dataset_<dataset>_His_<his_len>_Pred_<pred_len>``. In the ``./experiments/Prompt_Mode_finetuning_Dataset_<dataset>_His_<his_len>_Pred_<pred_len>/model_save/``, you will find the fine-tuned model named ``model_best.pkl``.
+Once your model is trained, you will find the logs recording the training process in the  ``./logs/`` directory. The folder will be named as the ``Prompt_Dataset_<dataset>_His_<his_len>_Pred_<pred_len>``. In the ``./experiments/Prompt_Dataset_<dataset>_His_<his_len>_Pred_<pred_len>/model_save/``, you will find the fine-tuned model named ``model_best.pkl``.
 
 The evaluation results of the testing set can be obtained from ``./experiments/Prompt_Mode_finetuning_Dataset_<dataset>_His_<his_len>_Pred_<pred_len>/result.txt``.
 
