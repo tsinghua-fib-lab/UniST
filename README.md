@@ -3,8 +3,11 @@
 The repo is the official implementation for the paper: UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction. It currently includes code implementations for the following tasks:
 
 > **Short-term Prediction**: We provide all scripts  for the reproduction of short-term prediction results in this repo.
+
 > **Long-term Prediction**: We provide all scripts  for the reproduction of long-term prediction results in this repo.
+
 > **Few-shot Prediction**: UniST can generalize well to scenarios with limited training data, making it to be data-efficient.
+
 > **Zero-shot Prediction**: UniST is demonstrated to generalize well on unseen spatio-temporal scenarios, making it a nice alternative as the fundamental backbone of the foundation spatio-temporal model.
 
 
