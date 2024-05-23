@@ -90,6 +90,9 @@ Once your model is trained, you will find the logs recording the training proces
 
 The evaluation results of the testing set can be obtained from ``./experiments/Prompt_Mode_finetuning_Dataset_<dataset>_His_<his_len>_Pred_<pred_len>/result.txt``.
 
+## Model Weights
+We provide downloads of model weights on xxx. Coming soon.
+
 ## Citation
 
 If you find this repo helpful, please cite our paper. 
