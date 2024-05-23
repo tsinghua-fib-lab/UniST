@@ -1,28 +1,26 @@
 # UniST
-### The repo is the official implementation for  our KDD submission: 
-### UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction
 
-It includes code implementations for the following tasks:
+The repo is the official implementation for the paper: UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction. It currently includes code implementations for the following tasks:
 
-- **Short-term Prediction**: We provide all scripts  for the reproduction of short-term prediction results in this repo.
-- **Long-term Prediction**: We provide all scripts  for the reproduction of long-term prediction results in this repo.
-- **Few-shot Prediction**: UniST can generalize well to scenarios with limited training data, making it to be data-efficient.
-- **Zero-shot Prediction**: UniST is demonstrated to generalize well on unseen spatio-temporal scenarios, making it a nice alternative as the fundamental backbone of the foundation spatio-temporal model.
+> **Short-term Prediction**: We provide all scripts  for the reproduction of short-term prediction results in this repo.
+> **Long-term Prediction**: We provide all scripts  for the reproduction of long-term prediction results in this repo.
+> **Few-shot Prediction**: UniST can generalize well to scenarios with limited training data, making it to be data-efficient.
+> **Zero-shot Prediction**: UniST is demonstrated to generalize well on unseen spatio-temporal scenarios, making it a nice alternative as the fundamental backbone of the foundation spatio-temporal model.
 
 
 ## Introduction
-🌟 By capturing the  underlying commonalities across multiple spatio-temporal scenarios, UniST breaks the  conventional practice that train separate models for different datasets, and has demonstrated superior performance and powerful generalization capability across diverse urban scenarios.
+🏆 By capturing the  underlying commonalities across multiple spatio-temporal scenarios, UniST breaks the  conventional practice that train separate models for different datasets, and has demonstrated superior performance and powerful generalization capability across diverse urban scenarios.
 ![UniST](./assets/figure1.jpg "")
 
 ## Overall Architecture
-The training of UniST consists of two stages: (i) large-scale spatio-temporal pre-training, and (ii) spatio-temporal knowledge-guided prompt tuning. 
+🌟 The training of UniST consists of two stages: (i) large-scale spatio-temporal pre-training, and (ii) spatio-temporal knowledge-guided prompt tuning. 
 ![OverallArchi](./assets/model.jpg "")
 
 The pseudo-code of UniST is as simple as the following:
 ![Alg](./assets/alg.jpg "")
 
 ## Data
-We use multiple datasets to demonstrate the UniST, which span various cities and domains. To access the datasets, please refer to [data readme](https://github.com/YuanYuan98/UniST/blob/main/dataset/README.md).
+We use multiple datasets to demonstrate the UniST, which span various cities and domains. To access the datasets, please refer to [data readme]().
 
 
 ## Installation
@@ -83,6 +81,18 @@ Once your model is trained, you will find the logs recording the training proces
 
 The evaluation results of the testing set can be obtained from ``./experiments/Prompt_Mode_finetuning_Dataset_<dataset>_His_<his_len>_Pred_<pred_len>/result.txt``.
 
+## Citation
+
+If you find this repo helpful, please cite our paper. 
+
+```
+@article{yuan2024unist,
+  title={UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction},
+  author={Yuan, Yuan and Ding, Jingtao and Feng, Jie and Jin, Depeng and Li, Yong},
+  journal={arXiv preprint arXiv:2402.11838},
+  year={2024}
+}
+```
 
 ## Acknowledgement
 We appreciate the following GitHub repos a lot for their valuable code and efforts.
@@ -91,3 +101,8 @@ We appreciate the following GitHub repos a lot for their valuable code and effor
 - MAE: [https://github.com/facebookresearch/mae](https://github.com/facebookresearch/mae)
 - PatchTST: [https://github.com/PatchTST/PatchTST](https://github.com/PatchTST/PatchTST)
 - iTransformer: [https://github.com/thuml/iTransformer](https://github.com/thuml/iTransformer)
+
+## Contact
+
+If you have any questions or want to use the code, feel free to contact:
+* Yuan Yuan (y-yuan20@mails.tsinghua.edu.cn)
