@@ -11,6 +11,12 @@ The repo is the official implementation for the paper: UniST: A Prompt-Empowered
 > **Zero-shot Prediction**: UniST is demonstrated to generalize well on unseen spatio-temporal scenarios, making it a nice alternative as the fundamental backbone of the foundation spatio-temporal model.
 
 
+## Updates
+
+:triangular_flag_on_post: **News** (2024.05) UniST has been accepted to **KDD 2024**.
+
+
+
 ## Introduction
 🏆 By capturing the  underlying commonalities across multiple spatio-temporal scenarios, UniST breaks the  conventional practice that train separate models for different datasets, and has demonstrated superior performance and powerful generalization capability across diverse urban scenarios.
 ![UniST](./assets/figure1.jpg "")
