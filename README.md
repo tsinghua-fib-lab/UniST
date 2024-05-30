@@ -138,7 +138,7 @@ If you find this repo helpful, please cite our paper.
 }
 ```
 
-## Acknowledgement
+## 🙇‍ Acknowledgement
 We appreciate the following GitHub repos a lot for their valuable code and efforts.
 - Spatio-temporal prediction benchmark: [https://github.com/chengtan9907/OpenSTL](https://github.com/chengtan9907/OpenSTL)
 - Spatio-temporal data: [https://github.com/aptx1231/NYC-Dataset](https://github.com/aptx1231/NYC-Dataset)
@@ -146,7 +146,7 @@ We appreciate the following GitHub repos a lot for their valuable code and effor
 - PatchTST: [https://github.com/PatchTST/PatchTST](https://github.com/PatchTST/PatchTST)
 - iTransformer: [https://github.com/thuml/iTransformer](https://github.com/thuml/iTransformer)
 
-## Contact
+## 📧 Contact
 
 If you have any questions or want to use the code, feel free to contact:
 * Yuan Yuan (y-yuan20@mails.tsinghua.edu.cn)
