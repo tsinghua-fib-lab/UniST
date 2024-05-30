@@ -40,7 +40,7 @@ The pseudo-code of UniST is as simple as the following:
 | TFM [6]    | Graph | **✗** | **✗** | **✗** | Low | Low |
 | UrbanGPT [7]     | Grid | **✓**<sup>(a)</sup>  | **✓**<sup>(a)</sup> | **✓**<sup>(a)</sup> | High | High |
 | STG-LLM [8]    | Graph | **✗**  | **✗** | **✗** | High | High |
-| UniST | Grid | **✓**  | **✓** | **✓** | Low | Low |
+| UniST | Grid/Graph | **✓**  | **✓** | **✓** | Low | Low |
 
 <sub>**(a). Still restricted in the same city.**</sub><br>
 
