@@ -11,7 +11,7 @@ The repo is the official implementation for the paper: [**UniST: A Prompt-Empowe
 > **Zero-shot Prediction**: UniST is demonstrated to generalize well on unseen spatio-temporal scenarios, making it a nice alternative as the fundamental backbone of the foundation spatio-temporal model.
 
 
-## Updates
+## 🎉 Updates
 
 :triangular_flag_on_post: **News** (2024.05) UniST has been accepted to **KDD 2024**.
 
@@ -31,8 +31,7 @@ The pseudo-code of UniST is as simple as the following:
 ## Data
 We use multiple datasets to demonstrate the UniST, which span various cities and domains. To access the datasets, please refer to [data readme]().
 
-
-## Installation
+## ⚙️ Installation
 ### Environment
 - Tested OS: Linux
 - Python >= 3.9
@@ -43,7 +42,7 @@ We use multiple datasets to demonstrate the UniST, which span various cities and
 1. Install Pytorch with the correct CUDA version.
 2. Use the ``pip install -r requirements.txt`` command to install all of the Python modules and packages used in this project.
 
-## Model Training
+## 🏃 Model Training
 
 Please first navigate to the ``src`` directory by using the cd command:
 
@@ -93,7 +92,7 @@ The evaluation results of the testing set can be obtained from ``./experiments/P
 ## Model Weights
 We provide downloads of model weights on xxx. Coming soon.
 
-## Citation
+## 👀 Citation
 
 If you find this repo helpful, please cite our paper. 
 
