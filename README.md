@@ -44,6 +44,16 @@ The pseudo-code of UniST is as simple as the following:
 
 <sub>**(a). Still restricted in the same city.**</sub><br>
 
+[1] [PromptST: Prompt-Enhanced Spatio-Temporal Multi-Attribute Prediction](), CIKM 2023
+
+[2] [GPT-ST: Generative Pre-Training of Spatio-Temporal Graph Neural Networks](), NIPS 2023
+
+[3] [Pre-training enhanced spatial-temporal graph neural network for multivariate time series forecasting](), KDD 2022
+
+[4] [Spatio-Temporal Self-Supervised Learning for Traffic Flow Prediction](), AAAI 2023
+
+[5] [TrafficBERT: Pre-trained model with large-scale data for long-range traffic flow forecasting](), Expert Systems with Applications
+
 [1] Zhang, Zijian, et al. "PromptST: Prompt-Enhanced Spatio-Temporal Multi-Attribute Prediction." Proceedings of the 32nd ACM International Conference on Information and Knowledge Management. 2023.
 
 [2] Li, Zhonghang, et al. "GPT-ST: Generative Pre-Training of Spatio-Temporal Graph Neural Networks." Advances in Neural Information Processing Systems 36 (2024).
