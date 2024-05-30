@@ -28,7 +28,7 @@ The repo is the official implementation for the paper: [**UniST: A Prompt-Empowe
 The pseudo-code of UniST is as simple as the following:
 ![Alg](./assets/alg.jpg "")
 
-## ⚖ Comparison with other foundation models for spatio-temporal prediction
+## ⚖ Foundation models for spatio-temporal prediction
 
 | Model  | Data Format | Data Scalability | Few-shot | Zero-shot | Computation Cost | Memory Cost |
 |--------|-------------|------------------|----------|-----------|------------------|-------------|
