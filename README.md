@@ -28,8 +28,41 @@ The repo is the official implementation for the paper: [**UniST: A Prompt-Empowe
 The pseudo-code of UniST is as simple as the following:
 ![Alg](./assets/alg.jpg "")
 
+## ⚖ Comparison with other spatio-temporal foundation models
+
+| Model  | Data Format | Data Scalability | Few-shot | Zero-shot | Computation Cost | Memory Cost |
+|--------|-------------|------------------|----------|-----------|------------------|-------------|
+| PromptST [1] | Grid | **✗** | **✗** | **✗** | Low | Low |
+| GPT-ST [2]   | Graph | **✗** | **✗** | **✗** | Low | Low |
+| STEP [3]    | Graph |  **✗** | **✗** | **✗** | Low | Low |
+| ST-SSL [4]   | Graph |  **✗** | **✗** | **✗** | Low | Low |
+| TrafficBERT [5] | Grid/Graph  |  **✓** | **✗** | **✗** | Low | Low |
+| TFM [6]    | Graph | **✗** | **✗** | **✗** | Low | Low |
+| UrbanGPT [7]     | Grid | **✓**<sup>(a)</sup>  | **✓**<sup>(a)</sup> | **✓**<sup>(a)</sup> | High | High |
+| STG-LLM [8]    | Graph | **✗**  | **✗** | **✗** | High | High |
+| UniST | Grid | **✓**  | **✓** | **✓** | Low | Low |
+
+<sub>**(a). Still restricted in the same city.**</sub><br>
+
+[1] Zhang, Zijian, et al. "PromptST: Prompt-Enhanced Spatio-Temporal Multi-Attribute Prediction." Proceedings of the 32nd ACM International Conference on Information and Knowledge Management. 2023.
+
+[2] Li, Zhonghang, et al. "GPT-ST: Generative Pre-Training of Spatio-Temporal Graph Neural Networks." Advances in Neural Information Processing Systems 36 (2024).
+
+[3] Shao, Zezhi, et al. "Pre-training enhanced spatial-temporal graph neural network for multivariate time series forecasting." Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2022.
+
+[4] Spatio-Temporal Self-Supervised Learning for Traffic Flow Prediction
+
+[5] Jin, KyoHoon, et al. "TrafficBERT: Pre-trained model with large-scale data for long-range traffic flow forecasting." Expert Systems with Applications 186 (2021): 115738.
+
+[6] Wang, Xuhong, et al. "Building transportation foundation model via generative graph transformer." 2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC). IEEE, 2023.
+
+[7] Li, Zhonghang, et al. "UrbanGPT: Spatio-Temporal Large Language Models." KDD 2024.
+
+[8] Liu, Lei, et al. "How can large language models understand spatial-temporal data?." arXiv preprint arXiv:2401.14192 (2024).
+
 ## Data
 We use multiple datasets to demonstrate the UniST, which span various cities and domains. To access the datasets, please refer to [data readme]().
+
 
 ## ⚙️ Installation
 ### Environment
