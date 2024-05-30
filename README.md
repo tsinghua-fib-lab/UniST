@@ -28,7 +28,7 @@ The repo is the official implementation for the paper: [**UniST: A Prompt-Empowe
 The pseudo-code of UniST is as simple as the following:
 ![Alg](./assets/alg.jpg "")
 
-## ⚖ Comparison with other spatio-temporal foundation models
+## ⚖ Comparison with other foundation models for spatio-temporal prediction
 
 | Model  | Data Format | Data Scalability | Few-shot | Zero-shot | Computation Cost | Memory Cost |
 |--------|-------------|------------------|----------|-----------|------------------|-------------|
@@ -44,31 +44,21 @@ The pseudo-code of UniST is as simple as the following:
 
 <sub>**(a). Still restricted in the same city.**</sub><br>
 
-[1] [PromptST: Prompt-Enhanced Spatio-Temporal Multi-Attribute Prediction](), CIKM 2023
+[1] [PromptST: Prompt-Enhanced Spatio-Temporal Multi-Attribute Prediction](https://arxiv.org/abs/2309.09500), CIKM 2023
 
-[2] [GPT-ST: Generative Pre-Training of Spatio-Temporal Graph Neural Networks](), NIPS 2023
+[2] [GPT-ST: Generative Pre-Training of Spatio-Temporal Graph Neural Networks](https://proceedings.neurips.cc/paper_files/paper/2023/file/de7858e3e7f9f0f7b2c7bfdc86f6d928-Paper-Conference.pdf), NIPS 2023
 
-[3] [Pre-training enhanced spatial-temporal graph neural network for multivariate time series forecasting](), KDD 2022
+[3] [Pre-training enhanced spatial-temporal graph neural network for multivariate time series forecasting](https://dl.acm.org/doi/10.1145/3534678.3539396), KDD 2022
 
-[4] [Spatio-Temporal Self-Supervised Learning for Traffic Flow Prediction](), AAAI 2023
+[4] [Spatio-Temporal Self-Supervised Learning for Traffic Flow Prediction](https://dl.acm.org/doi/10.1609/aaai.v37i4.25555), AAAI 2023
 
 [5] [TrafficBERT: Pre-trained model with large-scale data for long-range traffic flow forecasting](), Expert Systems with Applications
 
-[1] Zhang, Zijian, et al. "PromptST: Prompt-Enhanced Spatio-Temporal Multi-Attribute Prediction." Proceedings of the 32nd ACM International Conference on Information and Knowledge Management. 2023.
+[6] [Building transportation foundation model via generative graph transformer](https://www.sciencedirect.com/science/article/pii/S0957417421011179), ITSC 2023
 
-[2] Li, Zhonghang, et al. "GPT-ST: Generative Pre-Training of Spatio-Temporal Graph Neural Networks." Advances in Neural Information Processing Systems 36 (2024).
+[7] [UrbanGPT: Spatio-Temporal Large Language Models](https://arxiv.org/abs/2403.00813), KDD 2024
 
-[3] Shao, Zezhi, et al. "Pre-training enhanced spatial-temporal graph neural network for multivariate time series forecasting." Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2022.
-
-[4] Spatio-Temporal Self-Supervised Learning for Traffic Flow Prediction
-
-[5] Jin, KyoHoon, et al. "TrafficBERT: Pre-trained model with large-scale data for long-range traffic flow forecasting." Expert Systems with Applications 186 (2021): 115738.
-
-[6] Wang, Xuhong, et al. "Building transportation foundation model via generative graph transformer." 2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC). IEEE, 2023.
-
-[7] Li, Zhonghang, et al. "UrbanGPT: Spatio-Temporal Large Language Models." KDD 2024.
-
-[8] Liu, Lei, et al. "How can large language models understand spatial-temporal data?." arXiv preprint arXiv:2401.14192 (2024).
+[8] [How can large language models understand spatial-temporal data?](https://arxiv.org/abs/2401.14192), arXiv 2024
 
 ## Data
 We use multiple datasets to demonstrate the UniST, which span various cities and domains. To access the datasets, please refer to [data readme]().
