@@ -61,7 +61,7 @@ The pseudo-code of UniST is as simple as the following:
 [8] [How can large language models understand spatial-temporal data?](https://arxiv.org/abs/2401.14192), arXiv 2024
 
 ## Data
-We use multiple datasets to demonstrate the UniST, which span various cities and domains. To access the datasets, please refer to [data readme]().
+We use multiple datasets to demonstrate the UniST, which span various cities and domains. To access the datasets, please refer to [data readme](https://github.com/tsinghua-fib-lab/UniST/blob/main/dataset/README.md).
 
 
 ## ⚙️ Installation
