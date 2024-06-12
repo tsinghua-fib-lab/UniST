@@ -19,7 +19,7 @@ The repo is the official implementation for the paper: [**UniST: A Prompt-Empowe
 
 ## Introduction
 🏆 By capturing the  underlying commonalities across multiple spatio-temporal scenarios, UniST breaks the  conventional practice that train separate models for different datasets, and has demonstrated superior performance and powerful generalization capability across diverse urban scenarios.
-![UniST](./assets/figure1.jpg "")
+![UniST](./assets/figure1.png "")
 
 ## Overall Architecture
 🌟 The training of UniST consists of two stages: (i) large-scale spatio-temporal pre-training, and (ii) spatio-temporal knowledge-guided prompt tuning. 
