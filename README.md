@@ -4,7 +4,7 @@ A pytorch implementation for the paper: [**UniST: A Prompt-Empowered Universal M
 
 [Yuan Yuan](https://scholar.google.com/citations?user=1AaWLJ8AAAAJ), [Jingtao Ding](https://scholar.google.com/citations?user=_TAJECAAAAAJ), [Jie Feng](https://scholar.google.com/citations?user=uvLx-GAAAAAJ), [Depeng Jin](), [Yong Li](https://scholar.google.com/citations?user=kmgzPeQAAAAJ)
 
-**[FIBLAB]([https://sites.google.com/view/chaoh/home](https://fi.ee.tsinghua.edu.cn/))@[Tsinghua University](https://www.tsinghua.edu.cn/)**
+**[FIBLAB](https://fi.ee.tsinghua.edu.cn/))@[Tsinghua University](https://www.tsinghua.edu.cn/)**
 
 -----
 
