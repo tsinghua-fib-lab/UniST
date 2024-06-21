@@ -1,6 +1,13 @@
 # UniST
 
-The repo is the official implementation for the paper: [**UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction**](https://arxiv.org/abs/2402.11838). It currently includes code implementations for the following tasks:
+A pytorch implementation for the paper: [**UniST: A Prompt-Empowered Universal Model for Urban Spatio-Temporal Prediction**](https://arxiv.org/abs/2402.11838).
+[Yuan Yuan](https://scholar.google.com/citations?user=1AaWLJ8AAAAJ), [Jingtao Ding](https://scholar.google.com/citations?user=_TAJECAAAAAJ), [Jie Feng](https://scholar.google.com/citations?user=uvLx-GAAAAAJ), [Depeng Jin](), [Yong Li](https://scholar.google.com/citations?user=kmgzPeQAAAAJ)
+
+**[FIBLAB]([https://sites.google.com/view/chaoh/home](https://fi.ee.tsinghua.edu.cn/))@[Tsinghua University](https://www.tsinghua.edu.cn/)**
+
+-----
+
+The repo currently includes code implementations for the following tasks:
 
 > **Short-term Prediction**: We provide all scripts  for the reproduction of short-term prediction results in this repo.
 
@@ -13,7 +20,9 @@ The repo is the official implementation for the paper: [**UniST: A Prompt-Empowe
 
 ## 🎉 Updates
 
-:triangular_flag_on_post: **News** (2024.05) UniST has been accepted to **KDD 2024**.
+📢: **News** (2024.06) Introduction of our work in [Chinese](https://mp.weixin.qq.com/s/4rxmEx-8cYfgWHX6ct9gag) is available.
+
+📢: **News** (2024.05) UniST has been accepted to **KDD 2024**.
 
 
 
