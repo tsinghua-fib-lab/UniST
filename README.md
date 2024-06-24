@@ -33,7 +33,7 @@ The repo currently includes code implementations for the following tasks:
 
 ## Overall Architecture
 🌟 The training of UniST consists of two stages: (i) large-scale spatio-temporal pre-training, and (ii) spatio-temporal knowledge-guided prompt tuning. 
-![OverallArchi](./assets/model.jpg "")
+![OverallArchi](./assets/model_all.jpg "")
 
 The pseudo-code of UniST is as simple as the following:
 ![Alg](./assets/alg.jpg "")
