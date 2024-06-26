@@ -107,7 +107,7 @@ If you need to use multiple datasets, please use an asterisk (*) to separate the
 We provide the scripts under the folder `./scripts/prompt_tuning.sh`. You can fine-tune UniST with the Cellular dataset as the following examples:
 
 ```python
-python main.py --device_id 2 --machine machine --task short --size middle   --prompt_ST 1  --pred_len 6 --his_len 6  -num_memory_spatial 512 --num_memory_temporal 512  --prompt_content 's_p_c'  --dataset Crowd    --lr 3e-4 --used_data 'single' --file_load_path  pretrained_model_path
+python main.py --device_id 2 --machine machine --task short --size middle   --prompt_ST 1  --pred_len 6 --his_len 6  --num_memory_spatial 512 --num_memory_temporal 512  --prompt_content 's_p_c'  --dataset Crowd    --lr 3e-4 --used_data 'single' --file_load_path  pretrained_model_path
 ```
 
 There are some new parameters to specify:
