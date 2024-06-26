@@ -126,7 +126,7 @@ def main():
 
     if args.prompt_ST==1:
         if args.file_load_path != '':
-            model.load_state_dict(torch.load('./experiments/{}/model_save/model_best.pkl'.format(args.file_load_path),map_location=device), strict=False)
+            model.load_state_dict(torch.load('{}.pkl'.format(args.file_load_path),map_location=device), strict=False)
             print('pretrained model loaded') 
         args.mask_strategy_random = 'none'
         args.mask_strategy = 'temporal'
