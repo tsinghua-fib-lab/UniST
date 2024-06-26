@@ -21,7 +21,7 @@ The repo currently includes code implementations for the following tasks:
 
 ## 🎉 Updates
 
-📢: **News** (2024.06) Introduction of our work in [Chinese](https://mp.weixin.qq.com/s/4rxmEx-8cYfgWHX6ct9gag) is available.
+📢: **News** (2024.06) Introduction of our work in [量子位](https://mp.weixin.qq.com/s/4rxmEx-8cYfgWHX6ct9gag), [时空探索之旅](https://mp.weixin.qq.com/s/KoARxX0ko1nPHJbsAh5HQw) are available.
 
 📢: **News** (2024.05) UniST has been accepted to **KDD 2024**.
 
