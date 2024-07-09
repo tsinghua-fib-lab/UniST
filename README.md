@@ -151,3 +151,23 @@ We appreciate the following GitHub repos a lot for their valuable code and effor
 
 If you have any questions or want to use the code, feel free to contact:
 * Yuan Yuan (y-yuan20@mails.tsinghua.edu.cn)
+什么是张量（Tensor）-CSDN博客
+多元时序预测：独立预测 or 联合预测？-腾讯云开发者社区-腾讯云
+ML-NLP/NLP/16.4 textRNN & textCNN at master · NLP-LOVE/ML-NLP
+【论文下饭】PatchTST中的channel-independence-CSDN博客
+3d卷积的cnn网络 cnn卷积运算_mob64ca13fb1f2e的技术博客_51CTO博客
+3D卷积，代码实现 - 吴建明wujianming - 博客园
+Transformer解析与tensorflow代码解读 - 不著人间风雨门 - 博客园
+Transformer——patch embedding代码-CSDN博客
+论文
+深度学习的优化器（各类 optimizer 的原理、优缺点及数学推导） - FromL77 - 博客园
+CNN中的参数解释及计算
+nn.LayerNorm的实现及原理-CSDN博客
+自监督学习之掩码自动编码器(Masked Autoencoders, MAE)——音频识别方面_掩码自编码器-CSDN博客
+Pytorch之Embedding与Linear的爱恨纠葛 - 奥辰 - 博客园
+【Pytorch】nn.Dropout的用法-CSDN博客
+torch.sort()和torch.argsort()简要介绍-CSDN博客
+详解 Pytorch.random-CSDN博客
+图解torch.gather()的用法_torch.gather 三维使用方法-CSDN博客
+大语言模型的预训练[3]之Prompt Learning：Prompt Engineering、Answer engineering详解-腾讯云开发者社区-腾讯云
+五万字综述！Prompt-Tuning：深度解读一种新的微调范式 - 知乎
