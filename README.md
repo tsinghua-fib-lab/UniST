@@ -20,6 +20,9 @@ The repo currently includes code implementations for the following tasks:
 
 
 ## 🎉 Updates
+📢: **News** (2024.12) We are delighted to release [UrbanDiT](https://arxiv.org/abs/2411.12164),  the ultimate spatio-temporal universal model trained from scratch. Compared to UniFlow and UniST, UrbanDiT offers greater universality, tackling **multiple tasks** while seamlessly supporting **diverse data types and formats across various scenarios**.
+
+📢: **News** (2024.10) We are excited to introduce [UniFlow](https://arxiv.org/abs/2411.12972), a significant enhancement to our UniST framework! It seamlessly handles both **grid-based** data and **graph-based** data simultaneously, unlocking greater universalty. 
 
 📢: **News** (2024.06) Introduction of our work in [量子位](https://mp.weixin.qq.com/s/4rxmEx-8cYfgWHX6ct9gag), [时空探索之旅](https://mp.weixin.qq.com/s/KoARxX0ko1nPHJbsAh5HQw), [时序人](https://mp.weixin.qq.com/s/SxoYTCFa5JIuiBaBDVDecA) are available.
 
