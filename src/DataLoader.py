@@ -51,17 +51,6 @@ def data_load_single(args, dataset):
     X_test_period = torch.tensor(data_all['X_test'][1]).permute(0,2,1,3,4)
     X_val_period = torch.tensor(data_all['X_val'][1]).permute(0,2,1,3,4)
 
-    # X_train = torch.randn([1000, 1, 12, 16, 8])
-    # X_test = torch.randn([100, 1, 12, 16, 8])
-    # X_val = torch.randn([100, 1, 12, 16, 8])
-
-    # X_train_period = torch.randn([1000, 3, 12, 16, 8])
-    # X_test_period = torch.randn([100, 3, 12, 16, 8])
-    # # X_val_period = torch.randn([100, 3, 12, 16, 8])
-
-    # data_all = {}
-    # data_all['timestamps'] = {'train':torch.zeros([1000,12,2]).long(), 'test':torch.zeros([100,12,2]).long(), 'val':torch.zeros([100,12,2]).long()}
-
     args.seq_len = X_train.shape[2]
     H, W = X_train.shape[3], X_train.shape[4]  
 
