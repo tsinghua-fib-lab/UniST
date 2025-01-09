@@ -72,7 +72,7 @@ def data_load_single(args, dataset):
         X_test_ts = torch.tensor([[((i%(24*2*7)//(24*2)+2)%7, i%(24*2)) for i in t] for t in X_test_ts])
         X_val_ts = torch.tensor([[((i%(24*2*7)//(24*2)+2)%7, i%(24*2)) for i in t] for t in X_val_ts])
 
-    elif 'TaxiNYC' in dataset or 'BikeNYC' in dataset or 'TDrive' in dataset or 'Traffic' in dataset or 'DC' in dataset or 'Austin' in dataset or 'Porto' in dataset or 'CHI' in dataset:
+    elif 'TaxiNYC' in dataset or 'BikeNYC' in dataset or 'TDrive' in dataset or 'Traffic' in dataset or 'DC' in dataset or 'Austin' in dataset or 'Porto' in dataset or 'CHI' in dataset or 'METR-LA' in dataset or 'CrowdBJ' in dataset:
         X_train_ts = torch.tensor(data_all['timestamps']['train'])
         X_test_ts = torch.tensor(data_all['timestamps']['test'])
         X_val_ts = torch.tensor(data_all['timestamps']['val'])
