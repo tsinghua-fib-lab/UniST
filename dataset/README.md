@@ -1,6 +1,10 @@
 # Dataset
 
-The dataset includes various spatio-temporal scenarios that were used in our research.
+## Update
+
+In the journal version, we have added exepriemnts on Graph-based dataset. 
+
+The Graph-based ST data can be obtained in [METR-LA](https://zenodo.org/records/5146275).
 
 ## Download
 
